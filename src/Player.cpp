@@ -11,8 +11,8 @@
 
 // Player functions ============================================================
 int  Player_blink( uint16_t i ) { return ( i == 0 ); }
-int  Player_blink_n( uint16_t i, uint16_t MAX ) { return ( (MAX-5) > i ? (i+1)%2 : 0 ); }
-int  Player_square( uint16_t i, uint16_t MAX, uint16_t key ) { return ( key > i ? 1000 : 0 ); }
+int  Player_blink_n( uint16_t i, uint16_t MAX ) { return ( (MAX-3) > i ? (i+1)%2 : 0 ); }
+int  Player_square(  uint16_t i, uint16_t MAX, uint16_t key ) { return ( key > i ? 1000 : 0 ); }
 // void  Player_rise(  uint16_t i ) { return i; }
 // void  Player_fall(  uint16_t i, uint16_t MAX ) { return MAX - i; }
 int  Player_cos(   uint16_t i, uint16_t MAX ) { return 1000*cos( i*(2*PI/(float)MAX) ); }
@@ -76,7 +76,6 @@ uint8_t Player::update(){
       }
 
       // Call function
-      uint16_t _dt = 0;
            if(player_1_cb != nullptr) Value = player_1_cb(player_i);
       else if(player_2_cb != nullptr) Value = player_2_cb(player_i,player_len);
       else if(player_3_cb != nullptr) Value = player_3_cb(player_i,player_len,key);
@@ -86,6 +85,7 @@ uint8_t Player::update(){
       timeout = t + (time_dt?dt:Value);
 
       player_i++;
+
       return PLAYER_UPDATE + (player_i == player_len);
     }
   }
@@ -100,15 +100,15 @@ void  Player::time_dt_off(){ time_dt = false; }
 void  Player::set_time_dt(uint16_t _dt){ dt = _dt; time_dt_on(); }
 
 // Default Player functions ====================================================
-void  Player::play_blink( uint16_t periode ){ set_time_dt( periode/2 ); play( 2, Player_blink ); }
-void  Player::play_blink_n( uint16_t n, uint16_t one_pulse_ms ){ set_time_dt( one_pulse_ms/2 ); play( 2*(n+5), Player_blink_n ); }
-void  Player::play_square( uint16_t periode, uint16_t dutycicle ){ set_time_dt( periode/wav_len ); play_by_key( wav_len, dutycicle, Player_square ); }
-void  Player::play_sin(        uint16_t periode, uint16_t phase_deg ){ play_wave( periode, (wav_len*phase_deg)/360.0, wav_len, Player_sin        ); }
-void  Player::play_cos(        uint16_t periode, uint16_t phase_deg ){ play_wave( periode, (wav_len*phase_deg)/360.0, wav_len, Player_cos        ); }
-void  Player::play_triangular( uint16_t periode, uint16_t phase_i   ){ play_wave( periode,                   phase_i, wav_len, Player_triangular ); }
-void  Player::play_sawtooth(   uint16_t periode, uint16_t phase_i   ){ play_wave( periode,                   phase_i, wav_len, Player_sawtooth   ); }
+void  Player::play_blink( uint32_t periode ){ set_time_dt( periode/2 ); play( 2, Player_blink ); }
+void  Player::play_blink_n( uint32_t n, uint16_t one_pulse_ms ){ set_time_dt( one_pulse_ms/2 ); play( 2*n+3, Player_blink_n ); }
+void  Player::play_square( uint32_t periode, uint16_t dutycicle ){ set_time_dt( periode/wav_len ); play_by_key( wav_len, dutycicle, Player_square ); }
+void  Player::play_sin(        uint32_t periode, uint16_t phase_deg ){ play_wave( periode, (wav_len*phase_deg)/360.0, wav_len, Player_sin        ); }
+void  Player::play_cos(        uint32_t periode, uint16_t phase_deg ){ play_wave( periode, (wav_len*phase_deg)/360.0, wav_len, Player_cos        ); }
+void  Player::play_triangular( uint32_t periode, uint16_t phase_i   ){ play_wave( periode,                   phase_i, wav_len, Player_triangular ); }
+void  Player::play_sawtooth(   uint32_t periode, uint16_t phase_i   ){ play_wave( periode,                   phase_i, wav_len, Player_sawtooth   ); }
 
-void  Player::play_wave( uint16_t periode, uint16_t phase_i, uint16_t len, int (*f)(uint16_t) ){
+void  Player::play_wave( uint32_t periode, uint16_t phase_i, uint16_t len, int (*f)(uint16_t) ){
   set_time_dt(periode/len);
   reset( phase_i );
   player_len = len;
@@ -116,7 +116,7 @@ void  Player::play_wave( uint16_t periode, uint16_t phase_i, uint16_t len, int (
   play();
 }
 
-void  Player::play_wave( uint16_t periode, uint16_t phase_i, uint16_t len, int (*f)(uint16_t,uint16_t) ){
+void  Player::play_wave( uint32_t periode, uint16_t phase_i, uint16_t len, int (*f)(uint16_t,uint16_t) ){
   set_time_dt(periode/len);
   reset( phase_i );
   player_2_cb = f;

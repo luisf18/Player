@@ -85,15 +85,15 @@ public:
     void  set_time_dt(uint16_t _dt);
 
     // Player
-    void  play_blink( uint16_t periode );
-    void  play_blink_n(    uint16_t n,       uint16_t one_pulse_ms );
-    void  play_square(     uint16_t periode, uint16_t dutycicle );
-    void  play_sin(        uint16_t periode, uint16_t phase_deg );
-    void  play_cos(        uint16_t periode, uint16_t phase_deg );
-    void  play_triangular( uint16_t periode, uint16_t phase_deg );
-    void  play_sawtooth(   uint16_t periode, uint16_t phase_deg );
-    void  play_wave( uint16_t periode, uint16_t phase_deg, uint16_t len, int (*f)(uint16_t) );
-    void  play_wave( uint16_t periode, uint16_t phase_deg, uint16_t len, int (*f)(uint16_t,uint16_t) );
+    void  play_blink( uint32_t periode );
+    void  play_blink_n(    uint32_t n,       uint16_t one_pulse_ms );
+    void  play_square(     uint32_t periode, uint16_t dutycicle );
+    void  play_sin(        uint32_t periode, uint16_t phase_deg );
+    void  play_cos(        uint32_t periode, uint16_t phase_deg );
+    void  play_triangular( uint32_t periode, uint16_t phase_deg );
+    void  play_sawtooth(   uint32_t periode, uint16_t phase_deg );
+    void  play_wave( uint32_t periode, uint16_t phase_deg, uint16_t len, int (*f)(uint16_t) );
+    void  play_wave( uint32_t periode, uint16_t phase_deg, uint16_t len, int (*f)(uint16_t,uint16_t) );
       
 };
 
