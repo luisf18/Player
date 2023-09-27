@@ -55,7 +55,7 @@ void Player::repeat(uint16_t n){
   Loop = false;
 }
 
-uint16_t Player::len() { player_len; }
+uint16_t Player::len() { return player_len; }
 int      Player::value() { return Value; }
 uint16_t Player::track(){ return player_i; }
 uint16_t Player::track(uint16_t i){ player_i = i; return track(); }
